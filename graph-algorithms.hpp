@@ -7,6 +7,7 @@
 #include <map>
 #include <queue>
 #include <limits>
+#include <algorithm>
 #include "union-find.hpp"
 
 using namespace std;
@@ -32,6 +33,10 @@ vector<int> dijkstras(vector<vector<PI>>& G, int source);
 // Floyd-Warshall
 // All pairs shortest path, assumes no negative weight cycles
 vector<vector<int>> FW(vector<vector<PI>>& G);
+
+// Topological sorting using Kahn's algorithm
+// If the graph contains a cycle, an empty vector will be returned
+vector<int> topsort(vector<vector<int>>& G);
 
 // Kruskal's algorithm for minimum spanning tree
 // Takes in a list of edges in the form [u,v,w]

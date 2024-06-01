@@ -93,6 +93,28 @@ vector<vector<int>> FW(vector<vector<PI>>& G) {
     return DP[n];
 }
 
+// Topological sorting using Kahn's algorithm
+// If the graph contains a cycle, an empty vector will be returned
+vector<int> topsort(vector<vector<int>>& G) {
+    int n = G.size();
+    vector<int> idg(n);
+    for ( auto u : G ) for ( auto v : u ) idg[v]++;
+
+    queue<int> Q;
+    for ( int i = 0; i < n; ++i ) if ( idg[i] == 0 ) Q.push(i);
+
+    int count = 0;
+    vector<int> order(n);
+    while ( !Q.empty() ) {
+        int u = Q.front();
+        Q.pop();
+        order[count++] = u;
+        for ( auto v : G[u] ) if ( --idg[v] == 0 ) Q.push(v);
+    }
+    if ( count < n ) order.resize(0);
+    return order;
+}
+
 // Kruskal's algorithm for minimum spanning tree
 // Takes in a list of edges in the form [u,v,w]
 // returns a list of edges in the form [u,v,w] that make up the MST
@@ -111,3 +133,4 @@ vector<vector<int>> kruskals(int n, vector<vector<int>>& edges) {
     }
     return T;
 }
+

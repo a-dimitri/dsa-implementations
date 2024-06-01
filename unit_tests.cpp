@@ -28,7 +28,8 @@ void _test_binary_search() {
 void _test_graph_algos() {
 
     // Test BFS
-    auto G = buildGraph(5, {{0,1},{1,2},{2,3},{0,2},{1,4}});
+    vector<vector<int>> edges = {{0,1},{1,2},{2,3},{0,2},{1,4}};
+    auto G = buildGraph(5, edges);
     vector<int> dist = bfs(G,0);
     assert((dist == vector<int> {0,1,1,2,2}));
     dist = bfs(G,2);
@@ -47,9 +48,16 @@ void _test_graph_algos() {
                                             {m,m,0,2,3},
                                             {m,m,m,0,1},
                                             {m,m,m,m,0}}));
+
+    // Test Kahn's (topological sort)
+    vector<int> order = topsort(G);
+    for ( auto e : edges ) assert(find(order.begin(),order.end(),e[0]) - find(order.begin(), order.end(), e[1]) < 0);
+    auto G3 = buildGraph(5, {{0,1},{1,2},{2,3},{0,2},{1,4},{3,1}});
+    assert(topsort(G3) == vector<int>());
     
-    vector<vector<int>> edges = {{0,1,1},{1,2,2},{2,3,5},{0,2,3},{0,3,4}};
-    auto T = kruskals(4, edges);
+    // Test Kruskals
+    vector<vector<int>> E = {{0,1,1},{1,2,2},{2,3,5},{0,2,3},{0,3,4}};
+    auto T = kruskals(4, E);
     assert( ( T == vector<vector<int>> {{0,1,1}, {1,2,2}, {0,3,4}}) );
 }
 
@@ -87,6 +95,7 @@ void _test_union_find() {
 int main(int argc, char const *argv[])
 {   
     cout << "--------------------------------------" << endl;
+    cout << "--------------------------------------" << endl;
     cout << "Testing binary search..." << endl;
     _test_binary_search();
     cout << "All binary search tests passed" << endl;
@@ -108,6 +117,7 @@ int main(int argc, char const *argv[])
     cout << "Testing graph algorithms..." << endl;
     _test_graph_algos();
     cout << "All graph algorithm tests passed" << endl;
+    cout << "--------------------------------------" << endl;
     cout << "--------------------------------------" << endl;
 
     return 0;
