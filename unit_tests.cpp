@@ -156,7 +156,7 @@ int main(int argc, char const *argv[])
     bool bs = false, t = false, uf = false, g = false, f = false;
     if ( argc == 1 ) _print_usage();
     else if ( argv[1] == "-h"sv || argv[1] == "--help"sv ) _print_help();
-    else if ( argv[1] == "-a"sv || argv[1] == "--all"sv) bs = t = uf = g = true;
+    else if ( argv[1] == "-a"sv || argv[1] == "--all"sv) bs = t = uf = g = f = true;
     else { 
         for ( int x = 1; x < argc; ++x ) {
             if ( argv[x] == "-bs"sv | argv[x] == "--binary_search"sv ) bs = true;
