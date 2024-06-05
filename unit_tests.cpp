@@ -2,6 +2,7 @@
 #include "graph-algorithms.hpp"
 #include "trie.hpp"
 #include "union-find.hpp"
+#include "flow.hpp"
 #include <iostream>
 #include <string>
 #include <cassert>
@@ -92,7 +93,7 @@ void _test_trie() {
     cout << "--------------------------------------" << endl;
 }
 
-
+// Sub-routine for testing union find
 void _test_union_find() {
     cout << "--------------------------------------" << endl;
     cout << "Testing union find..." << endl;
@@ -108,6 +109,32 @@ void _test_union_find() {
     cout << "--------------------------------------" << endl;
 }
 
+// Sub-routine for testing max flow
+void _test_flow() {
+    cout << "--------------------------------------" << endl;
+    cout << "Testing max flow..." << endl;
+    vector<vector<int>> G = {{1,2,3},{4},{4,5},{5,6},{7},{7},{7},{}};
+    vector<vector<int>> capacity = {{0,4,8,4,0,0,0,0},
+                                    {0,0,0,0,2,0,0,0},
+                                    {0,0,0,0,6,5,0,0},
+                                    {0,0,0,0,0,7,1,0},
+                                    {0,0,0,0,0,0,0,3},
+                                    {0,0,0,0,0,0,0,7},
+                                    {0,0,0,0,0,0,0,8},
+                                    {0,0,0,0,0,0,0,0}};
+    vector<vector<int>> flow(8,vector<int>(8));
+    assert(EdmondsKarp(G, capacity, flow, 0, 7) == 11);
+    vector<vector<int>> G2 = {{1,2},{2,3},{1,3},{}};
+    vector<vector<int>> capacity2 = {{0,1,3,0},
+                                     {0,0,7,2},
+                                     {0,7,0,2},
+                                     {0,0,0,0}};
+    vector<vector<int>> flow2(4,vector<int>(4));
+    assert(EdmondsKarp(G2, capacity2, flow2, 0, 3) == 4);
+    cout << "All max flow tests passed" << endl;
+    cout << "--------------------------------------" << endl;
+}
+
 void _print_usage() {
     cout << "To run all tests, use [-a | --all]" << endl;
     cout << "To see a full list of valid commands, use [-h | --help]" << endl;
@@ -120,12 +147,13 @@ void _print_help() {
     cout << "    [-t | --trie]                Tests the trie module" << endl;
     cout << "    [-uf | --union_find]         Tests the union find module" << endl;
     cout << "    [-g | --graph_algorithms]    Tests the graph algorithms module" << endl;
+    cout << "    [-f | --flow]                Tests the flow module" << endl;
 };
 
 int main(int argc, char const *argv[])
 {   
     using namespace std::literals;
-    bool bs = false, t = false, uf = false, g = false;
+    bool bs = false, t = false, uf = false, g = false, f = false;
     if ( argc == 1 ) _print_usage();
     else if ( argv[1] == "-h"sv || argv[1] == "--help"sv ) _print_help();
     else if ( argv[1] == "-a"sv || argv[1] == "--all"sv) bs = t = uf = g = true;
@@ -135,6 +163,7 @@ int main(int argc, char const *argv[])
             else if ( argv[x] == "-t"sv | argv[x] == "--trie"sv ) t = true;
             else if ( argv[x] == "-uf"sv | argv[x] == "--union_find"sv ) uf = true;
             else if ( argv[x] == "-g"sv | argv[x] == "--graph_algorithms"sv ) g = true;
+            else if ( argv[x] == "-f"sv | argv[x] == "--flow"sv ) f = true;
         }
     }
     if ( bs || t || uf || g ) cout << "--------------------------------------" << endl;
@@ -142,6 +171,7 @@ int main(int argc, char const *argv[])
     if ( t ) _test_trie();
     if ( uf ) _test_union_find();
     if ( g ) _test_graph_algos();
+    if ( f ) _test_flow();
     if ( bs || t || uf || g ) cout << "--------------------------------------" << endl;
     return 0;
 }
