@@ -8,4 +8,5 @@ add_executable(run_tests.out
                     trie.cpp
                     union-find.cpp
                     graph-algorithms.cpp
-                    flow.cpp)
+                    flow.cpp
+                    string-search.cpp)

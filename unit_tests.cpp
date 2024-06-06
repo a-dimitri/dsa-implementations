@@ -3,6 +3,7 @@
 #include "trie.hpp"
 #include "union-find.hpp"
 #include "flow.hpp"
+#include "string-search.hpp"
 #include <iostream>
 #include <string>
 #include <cassert>
@@ -135,6 +136,19 @@ void _test_flow() {
     cout << "--------------------------------------" << endl;
 }
 
+// Sub-routine for testing string searching
+void _test_string_search() {
+    cout << "--------------------------------------" << endl;
+    cout << "Testing string search..." << endl;
+    string s = "abrakadabra anaconda";
+    string t = "banana";
+    string t2 = "kadabra";
+    assert(rk(s,t) == -1);
+    assert(rk(s,t2) == 4);
+    cout << "All string search tests passed" << endl;
+    cout << "--------------------------------------" << endl;
+}
+
 void _print_usage() {
     cout << "To run all tests, use [-a | --all]" << endl;
     cout << "To see a full list of valid commands, use [-h | --help]" << endl;
@@ -148,15 +162,16 @@ void _print_help() {
     cout << "    [-uf | --union_find]         Tests the union find module" << endl;
     cout << "    [-g | --graph_algorithms]    Tests the graph algorithms module" << endl;
     cout << "    [-f | --flow]                Tests the flow module" << endl;
+    cout << "    [-ss | --string_search]      Tests the string search module" << endl;
 };
 
 int main(int argc, char const *argv[])
 {   
     using namespace std::literals;
-    bool bs = false, t = false, uf = false, g = false, f = false;
+    bool bs = false, t = false, uf = false, g = false, f = false, ss = false;
     if ( argc == 1 ) _print_usage();
     else if ( argv[1] == "-h"sv || argv[1] == "--help"sv ) _print_help();
-    else if ( argv[1] == "-a"sv || argv[1] == "--all"sv) bs = t = uf = g = f = true;
+    else if ( argv[1] == "-a"sv || argv[1] == "--all"sv) bs = t = uf = g = f = ss = true;
     else { 
         for ( int x = 1; x < argc; ++x ) {
             if ( argv[x] == "-bs"sv | argv[x] == "--binary_search"sv ) bs = true;
@@ -164,6 +179,7 @@ int main(int argc, char const *argv[])
             else if ( argv[x] == "-uf"sv | argv[x] == "--union_find"sv ) uf = true;
             else if ( argv[x] == "-g"sv | argv[x] == "--graph_algorithms"sv ) g = true;
             else if ( argv[x] == "-f"sv | argv[x] == "--flow"sv ) f = true;
+            else if ( argv[x] == "-ss"sv | argv[x] == "--string_search"sv ) ss = true;
         }
     }
     if ( bs || t || uf || g ) cout << "--------------------------------------" << endl;
@@ -172,6 +188,7 @@ int main(int argc, char const *argv[])
     if ( uf ) _test_union_find();
     if ( g ) _test_graph_algos();
     if ( f ) _test_flow();
+    if ( ss ) _test_string_search();
     if ( bs || t || uf || g ) cout << "--------------------------------------" << endl;
     return 0;
 }
