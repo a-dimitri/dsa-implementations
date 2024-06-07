@@ -1,8 +1,35 @@
 #include "string-search.hpp"
+#include <iostream>
 
 using namespace std;
 
 int kmp(string& s, string& t) {
+    int n = s.size();
+    int m = t.size();
+    
+    // Compute the failure function of t
+    vector<int> F(m);
+    int curr_len = 0;
+    int i = 1;
+    while ( i < m ) {
+        if ( t[i] == t[curr_len] ) {
+            curr_len++;
+            F[i] = curr_len;
+            i++;
+        } else if ( curr_len != 0 ) curr_len = F[curr_len];
+        else F[i++] = 0;
+    }
+
+    // Search for a match
+    int j = i = 0;
+    while ( n - i >= m - j ) {
+        if ( s[i] == t[j] ) {
+            i++;
+            j++;
+            if ( j == m ) return i-j;
+        } else if ( j == 0 ) i++;
+        else j = F[j-1];
+    }
     return -1;
 }  
 

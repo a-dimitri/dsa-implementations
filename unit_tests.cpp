@@ -140,11 +140,16 @@ void _test_flow() {
 void _test_string_search() {
     cout << "--------------------------------------" << endl;
     cout << "Testing string search..." << endl;
-    string s = "abrakadabra anaconda";
+    string s = "Rhabarberbarbarabar";
     string t = "banana";
-    string t2 = "kadabra";
+    string t2 = "barbara";
+    string t3 = "barabar";
     assert(rk(s,t) == -1);
-    assert(rk(s,t2) == 4);
+    assert(rk(s,t2) == 9);
+    assert(rk(s,t3) == 12);
+    assert(kmp(s,t) == -1);
+    assert(kmp(s,t2) == 9);
+    assert(kmp(s,t3) == 12);
     cout << "All string search tests passed" << endl;
     cout << "--------------------------------------" << endl;
 }
