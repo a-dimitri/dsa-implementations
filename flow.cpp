@@ -4,7 +4,7 @@ using namespace std;
 
 // G should be an adjacency list for the directed flow network
 // capacity[u][v] should 
-int EdmondsKarp(vector<vector<int>>& G, vector<vector<int>>& capacity, vector<vector<int>>& flow, int s, int t) {
+int edmonds_karp(vector<vector<int>>& G, vector<vector<int>>& capacity, vector<vector<int>>& flow, int s, int t) {
     int max_flow = 0;
     int n = G.size();
     vector<int> pred(n);

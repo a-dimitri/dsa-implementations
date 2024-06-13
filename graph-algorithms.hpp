@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <queue>
+#include <stack>
 #include <limits>
 #include <algorithm>
 #include "union-find.hpp"
@@ -14,10 +15,10 @@ using namespace std;
 typedef pair<int,int> PI;
 
 // Assumes edge list of the form [u,v] for vertices as integers from 0 to n-1
-vector<vector<int>> buildGraph(int n, vector<vector<int>> edges);
+vector<vector<int>> buildGraph(int n, vector<vector<int>>& edges);
 
 // Assumes edge list of the form [u,v,w] for a directed edge from u to v with weight w
-vector<vector<PI>> buildGraphWeighted(int n, vector<vector<int>> edges);
+vector<vector<PI>> buildGraphWeighted(int n, vector<vector<int>>& edges);
 
 // A template recursive DFS (returns nothing)
 void dfs(vector<vector<int>>& G, vector<int>& visited, int curr);
@@ -28,11 +29,15 @@ vector<int> bfs(vector<vector<int>>& G, int source);
 
 // Dijkstra's single source shortest path, assumes all weights are positive
 // dist[x] = numeric_limits<int>::max() means the vertex x was not reachable from source
-vector<int> dijkstras(vector<vector<PI>>& G, int source);
+vector<int> dijkstra(vector<vector<PI>>& G, int source);
+
+// Bellman-Ford single source shortest path, weights can be negative but no negative cycles
+// dist[x] = numeric_limits<int>::max() means the vertex x was not reachable from source
+vector<int> bellman_ford(vector<vector<PI>>& G, vector<vector<int>>& edges, int source);
 
 // Floyd-Warshall
 // All pairs shortest path, assumes no negative weight cycles
-vector<vector<int>> FW(vector<vector<PI>>& G);
+vector<vector<int>> floyd_warshall(vector<vector<PI>>& G);
 
 // Topological sorting using Kahn's algorithm
 // If the graph contains a cycle, an empty vector will be returned

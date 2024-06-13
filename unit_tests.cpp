@@ -43,29 +43,35 @@ void _test_graph_algos() {
     dist = bfs(G,2);
     assert((dist == vector<int> {-1,-1,0,1,-1}));
 
+    // Test Kahn's (topological sort)
+    vector<int> order = topsort(G);
+    for ( auto e : edges ) assert(find(order.begin(),order.end(),e[0]) - find(order.begin(), order.end(), e[1]) < 0);
+    edges = {{0,1},{1,2},{2,3},{0,2},{1,4},{3,1}};
+    auto G3 = buildGraph(5, edges);
+    assert(topsort(G3) == vector<int>());
+
     // Test Dijkstras
-    auto G2 = buildGraphWeighted(5, {{0,1,3},{1,2,1},{2,3,2},{0,2,5},{1,4,7},{3,4,1}});
+    edges = {{0,1,3},{1,2,1},{2,3,2},{0,2,5},{1,4,7},{3,4,1}};
+    auto G2 = buildGraphWeighted(5, edges);
     int m = numeric_limits<int>::max();
-    dist = dijkstras(G2,0);
+    dist = dijkstra(G2,0);
     assert((dist == vector<int> {0,3,4,6,7}));
-    dist = dijkstras(G2,2);
+    dist = dijkstra(G2,2);
     assert((dist == vector<int> {m,m,0,2,3}));
-    auto dist_FW = FW(G2);
+    dist = bellman_ford(G2,edges,0);
+    assert((dist == vector<int> {0,3,4,6,7}));
+    dist = bellman_ford(G2,edges,2);
+    assert((dist == vector<int> {m,m,0,2,3}));
+    auto dist_FW = floyd_warshall(G2);
     assert((dist_FW == vector<vector<int>> {{0,3,4,6,7},
                                             {m,0,1,3,4},
                                             {m,m,0,2,3},
                                             {m,m,m,0,1},
                                             {m,m,m,m,0}}));
-
-    // Test Kahn's (topological sort)
-    vector<int> order = topsort(G);
-    for ( auto e : edges ) assert(find(order.begin(),order.end(),e[0]) - find(order.begin(), order.end(), e[1]) < 0);
-    auto G3 = buildGraph(5, {{0,1},{1,2},{2,3},{0,2},{1,4},{3,1}});
-    assert(topsort(G3) == vector<int>());
     
     // Test Kruskals
-    vector<vector<int>> E = {{0,1,1},{1,2,2},{2,3,5},{0,2,3},{0,3,4}};
-    auto T = kruskals(4, E);
+    edges = {{0,1,1},{1,2,2},{2,3,5},{0,2,3},{0,3,4}};
+    auto T = kruskals(4, edges);
     assert( ( T == vector<vector<int>> {{0,1,1}, {1,2,2}, {0,3,4}}) );
     cout << "All graph algorithm tests passed" << endl;
     cout << "--------------------------------------" << endl;
@@ -124,14 +130,14 @@ void _test_flow() {
                                     {0,0,0,0,0,0,0,8},
                                     {0,0,0,0,0,0,0,0}};
     vector<vector<int>> flow(8,vector<int>(8));
-    assert(EdmondsKarp(G, capacity, flow, 0, 7) == 11);
+    assert(edmonds_karp(G, capacity, flow, 0, 7) == 11);
     vector<vector<int>> G2 = {{1,2},{2,3},{1,3},{}};
     vector<vector<int>> capacity2 = {{0,1,3,0},
                                      {0,0,7,2},
                                      {0,7,0,2},
                                      {0,0,0,0}};
     vector<vector<int>> flow2(4,vector<int>(4));
-    assert(EdmondsKarp(G2, capacity2, flow2, 0, 3) == 4);
+    assert(edmonds_karp(G2, capacity2, flow2, 0, 3) == 4);
     cout << "All max flow tests passed" << endl;
     cout << "--------------------------------------" << endl;
 }
@@ -144,12 +150,12 @@ void _test_string_search() {
     string t = "banana";
     string t2 = "barbara";
     string t3 = "barabar";
-    assert(rk(s,t) == -1);
-    assert(rk(s,t2) == 9);
-    assert(rk(s,t3) == 12);
-    assert(kmp(s,t) == -1);
-    assert(kmp(s,t2) == 9);
-    assert(kmp(s,t3) == 12);
+    assert(rabin_karp(s,t) == -1);
+    assert(rabin_karp(s,t2) == 9);
+    assert(rabin_karp(s,t3) == 12);
+    assert(knuth_morris_pratt(s,t) == -1);
+    assert(knuth_morris_pratt(s,t2) == 9);
+    assert(knuth_morris_pratt(s,t3) == 12);
     cout << "All string search tests passed" << endl;
     cout << "--------------------------------------" << endl;
 }

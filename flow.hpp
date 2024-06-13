@@ -7,6 +7,6 @@
 
 using namespace std;
 
-int EdmondsKarp(vector<vector<int>>& G, vector<vector<int>>& capacity, vector<vector<int>>& flow, int s, int t);
+int edmonds_karp(vector<vector<int>>& G, vector<vector<int>>& capacity, vector<vector<int>>& flow, int s, int t);
 
 #endif

@@ -1,9 +1,8 @@
 #include "string-search.hpp"
-#include <iostream>
 
 using namespace std;
 
-int kmp(string& s, string& t) {
+int knuth_morris_pratt(string& s, string& t) {
     int n = s.size();
     int m = t.size();
     
@@ -34,7 +33,7 @@ int kmp(string& s, string& t) {
 }  
 
 // Works as long as the string only contains ASCII characters (char values > 0)
-int rk(string& s, string& t) {
+int rabin_karp(string& s, string& t) {
     int n = s.size();
     int m = t.size();
     if ( m > n ) return -1;

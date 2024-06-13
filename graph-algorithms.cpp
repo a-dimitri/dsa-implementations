@@ -4,21 +4,18 @@
 using namespace std;
 typedef pair<int,int> PI;
 
-// Assumes edge list of the form [u,v] for vertices as integers from 0 to n-1
-vector<vector<int>> buildGraph(int n, vector<vector<int>> edges) {
+vector<vector<int>> buildGraph(int n, vector<vector<int>>& edges) {
     vector<vector<int>> G(n);
     for ( auto e : edges ) G[e[0]].push_back(e[1]);
     return G;
 }
 
-// Assumes edge list of the form [u,v,w] for a directed edge from u to v with weight w
-vector<vector<PI>> buildGraphWeighted(int n, vector<vector<int>> edges) {
+vector<vector<PI>> buildGraphWeighted(int n, vector<vector<int>>& edges) {
     vector<vector<PI>> G(n);
     for ( auto e : edges ) G[e[0]].push_back({e[1],e[2]});
     return G;
 }
 
-// A template recursive DFS (returns nothing)
 void dfs(vector<vector<int>>& G, vector<int>& visited, int curr) {
     if ( visited[curr] ) return;
     visited[curr] = 1;
@@ -28,8 +25,6 @@ void dfs(vector<vector<int>>& G, vector<int>& visited, int curr) {
     return;
 }
 
-// BFS for single source shortest path in an unweighted graph (can have cycles)
-// dist[x] = -1 means vertex x was not reachable from source
 vector<int> bfs(vector<vector<int>>& G, int source) {
     int n = G.size();
     vector<int> dist(n,-1);
@@ -49,9 +44,7 @@ vector<int> bfs(vector<vector<int>>& G, int source) {
     return dist;
 }
 
-// Dijkstra's single source shortest path, assumes all weights are positive
-// dist[x] = numeric_limits<int>::max() means the vertex x was not reachable from source
-vector<int> dijkstras(vector<vector<PI>>& G, int source) {
+vector<int> dijkstra(vector<vector<PI>>& G, int source) {
     int n = G.size();
     vector<int> dist(n,numeric_limits<int>::max());
     dist[source] = 0;
@@ -71,9 +64,17 @@ vector<int> dijkstras(vector<vector<PI>>& G, int source) {
     return dist;
 }
 
-// Floyd-Warshall
-// All pairs shortest path, assumes no negative weight cycles
-vector<vector<int>> FW(vector<vector<PI>>& G) {
+vector<int> bellman_ford(vector<vector<PI>>& G, vector<vector<int>>& edges, int source) {
+    int n = G.size();
+    vector<int> dist(n,numeric_limits<int>::max());
+    dist[source] = 0;
+    for ( int step = 0; step < n-1; ++step ) {
+        for ( auto& e : edges ) if ( dist[e[0]] < dist[e[1]] - e[2] ) dist[e[1]] = dist[e[0]] + e[2];
+    }
+    return dist;
+}
+
+vector<vector<int>> floyd_warshall(vector<vector<PI>>& G) {
     int n = G.size();
     vector<vector<vector<int>>> DP(n+1, vector<vector<int>>(n, vector<int>(n, numeric_limits<int>::max())));
     for ( int u = 0; u < n; ++u ) {
@@ -93,8 +94,6 @@ vector<vector<int>> FW(vector<vector<PI>>& G) {
     return DP[n];
 }
 
-// Topological sorting using Kahn's algorithm
-// If the graph contains a cycle, an empty vector will be returned
 vector<int> topsort(vector<vector<int>>& G) {
     int n = G.size();
     vector<int> idg(n);
@@ -115,9 +114,6 @@ vector<int> topsort(vector<vector<int>>& G) {
     return order;
 }
 
-// Kruskal's algorithm for minimum spanning tree
-// Takes in a list of edges in the form [u,v,w]
-// returns a list of edges in the form [u,v,w] that make up the MST
 vector<vector<int>> kruskals(int n, vector<vector<int>>& edges) {
     sort(edges.begin(), edges.end(), [](vector<int>& e1, vector<int>& e2) {return e2[2] > e1[2];} );
     UnionFind UF(n);
@@ -133,4 +129,3 @@ vector<vector<int>> kruskals(int n, vector<vector<int>>& edges) {
     }
     return T;
 }
-

@@ -8,10 +8,10 @@
 using namespace std;
 
 // Returns index of the first match of t in s, returns -1 if no match
-int kmp(string& s, string& t);
+int knuth_morris_pratt(string& s, string& t);
 
 // Returns index of the first match of t in s, returns -1 if no match
-int rk(string& s, string& t);
+int rabin_karp(string& s, string& t);
 
 bool _match(string& s, string& t, int i);
 
