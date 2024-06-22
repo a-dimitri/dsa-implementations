@@ -174,14 +174,14 @@ void _test_segment_tree() {
     T.update(0,0,9,0,100);
     assert(T.query(0,0,9,0,0) == 100);
     assert(T.query(0,0,9,0,9) == 145);
-    // segment_tree T2(test,[](auto& a, auto& b){return min(a,b);} );
-    // assert(T2.query(0,0,9,0,0) == 0);
-    // assert(T2.query(0,0,9,6,6) == 6);
-    // assert(T2.query(0,0,9,4,6) == 4);
-    // assert(T2.query(0,0,9,0,9) == 0);
-    // T2.update(0,0,9,0,100);
-    // assert(T2.query(0,0,9,0,0) == 100);
-    // assert(T2.query(0,0,9,0,9) == 1);
+    segment_tree T2(test,Max<int>());
+    assert(T2.query(0,0,9,0,0) == 0);
+    assert(T2.query(0,0,9,6,6) == 6);
+    assert(T2.query(0,0,9,4,6) == 6);
+    assert(T2.query(0,0,9,0,9) == 9);
+    T2.update(0,0,9,0,100);
+    assert(T2.query(0,0,9,0,0) == 100);
+    assert(T2.query(0,0,9,0,9) == 100);
     cout << "All segment tree tests passed" << endl;
     cout << "--------------------------------------" << endl;
 }

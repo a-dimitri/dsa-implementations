@@ -5,16 +5,18 @@
 
 using namespace std;
 
-// A basic Sum Segment Tree that supports updates in O(logn) time, and querying sums in any interval in O(logn) time
-// class segment_tree {
-// public:
-//     vector<int> t;
-//     int n;
-//     segment_tree(int n);
-//     segment_tree(vector<int>& arr);
-//     void build(vector<int>& arr, int v, int tl, int tr);
-//     void update(int v, int tl, int tr, int index, int val);
-//     int query(int v, int tl, int tr, int l, int r);
+template <typename T>
+struct Max {
+    T operator()(T a, T b) {
+        return max(a,b);
+    }
+};
+
+// template <typename T>
+// struct Min {
+//     T operator()(T a, T b) {
+//         return min(a,b);
+//     }
 // };
 
 template <typename T, class BinaryOp>
