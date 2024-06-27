@@ -5,6 +5,7 @@
 #include "flow.hpp"
 #include "string-search.hpp"
 #include "segment-tree.hpp"
+#include "fenwick-tree.hpp"
 #include <iostream>
 #include <string>
 #include <cassert>
@@ -161,7 +162,7 @@ void _test_string_search() {
     cout << "--------------------------------------" << endl;
 }
 
-// Sub-routine for testing advanced tree structures
+// Sub-routine for testing segment trees
 void _test_segment_tree() {
     cout << "--------------------------------------" << endl;
     cout << "Testing segment trees..." << endl;
@@ -186,6 +187,53 @@ void _test_segment_tree() {
     cout << "--------------------------------------" << endl;
 }
 
+// Sub-routine for testing Fenwick trees
+void _test_fenwick_tree() {
+    cout << "--------------------------------------" << endl;
+    cout << "Testing Fenwick trees..." << endl;
+    vector<int> test = {0,1,2,3,4,5,6,7,8,9};
+    fenwick_tree T(test,plus<>(),minus<>(),0);
+    assert(T.query(0,0) == 0);
+    assert(T.query(6,6) == 6);
+    assert(T.query(4,6) == 15);
+    assert(T.query(0,9) == 45);
+    T.set(0,100);
+    assert(T.query(0,0) == 100);
+    assert(T.query(0,9) == 145);
+    fenwick_tree T2(test,bit_xor<>(),bit_xor<>(),0);
+    assert(T2.query(0,0) == 0);
+    assert(T2.query(6,6) == 6);
+    assert(T2.query(4,6) == 7);
+    assert(T2.query(1,7) == 0);
+    assert(T2.query(0,4) == 4);
+    T2.set(0,4);
+    assert(T2.query(0,4) == 0);
+
+    vector<vector<double>> test2d = {{1.0,1.0,2.0},
+                                     {0.5,1.0,2.0},
+                                     {1.0,2.0,1.0}};
+    fenwick_tree_2d T3(test2d,plus<>(),minus<>(),0.0);
+    assert(T3.query(0,0,0,0) == 1.0);
+    assert(T3.query(1,0,1,0) == 0.5);
+    assert(T3.query(0,0,1,1) == 3.5);
+    assert(T3.query(0,0,2,1) == 6.5);
+    assert(T3.query(0,0,2,2) == 11.5);
+    T3.set(2,1,0.5);
+    assert(T3.query(0,0,2,1) == 5.0);
+    assert(T3.query(0,0,2,2) == 10.0);    
+    fenwick_tree_2d T4(test2d,multiplies<>(),divides<>(),1.0);
+    assert(T4.query(0,0,0,0) == 1.0);
+    assert(T4.query(1,0,1,0) == 0.5);
+    assert(T4.query(0,0,1,1) == 0.5);
+    assert(T4.query(0,0,2,1) == 1.0);
+    assert(T4.query(0,0,2,2) == 4.0);
+    T4.set(2,1,0.5);
+    assert(T4.query(0,0,2,1) == 0.25);
+    assert(T4.query(0,0,2,2) == 1.0);
+    cout << "All Fenwick tree tests passed" << endl;
+    cout << "--------------------------------------" << endl;
+}
+
 void _print_usage() {
     cout << "To run all tests, use [-a | --all]" << endl;
     cout << "To see a full list of valid commands, use [-h | --help]" << endl;
@@ -200,15 +248,17 @@ void _print_help() {
     cout << "    [-g | --graph_algorithms]    Tests the graph algorithms module" << endl;
     cout << "    [-f | --flow]                Tests the flow module" << endl;
     cout << "    [-ss | --string_search]      Tests the string search module" << endl;
+    cout << "    [-st | --segment_tree]       Tests the segment tree module" << endl;
+    cout << "    [-ft | --fenwick_tree]       Tests the fenwick tree module" << endl;
 };
 
 int main(int argc, char const *argv[])
 {   
     using namespace std::literals;
-    bool bs = false, t = false, uf = false, g = false, f = false, ss = false, st = false;
+    bool bs = false, t = false, uf = false, g = false, f = false, ss = false, st = false, ft = false;
     if ( argc == 1 ) _print_usage();
     else if ( argv[1] == "-h"sv || argv[1] == "--help"sv ) _print_help();
-    else if ( argv[1] == "-a"sv || argv[1] == "--all"sv) bs = t = uf = g = f = ss = st = true;
+    else if ( argv[1] == "-a"sv || argv[1] == "--all"sv) bs = t = uf = g = f = ss = st = ft = true;
     else { 
         for ( int x = 1; x < argc; ++x ) {
             if ( argv[x] == "-bs"sv | argv[x] == "--binary_search"sv ) bs = true;
@@ -218,9 +268,10 @@ int main(int argc, char const *argv[])
             else if ( argv[x] == "-f"sv | argv[x] == "--flow"sv ) f = true;
             else if ( argv[x] == "-ss"sv | argv[x] == "--string_search"sv ) ss = true;
             else if ( argv[x] == "-st"sv | argv[x] == "--segment_tree"sv ) st = true;
+            else if ( argv[x] == "-ft"sv | argv[x] == "--fenwick_tree"sv ) ft = true;
         }
     }
-    if ( bs || t || uf || g || f || ss || st) cout << "--------------------------------------" << endl;
+    if ( bs || t || uf || g || f || ss || st || ft) cout << "--------------------------------------" << endl;
     if ( bs ) _test_binary_search();
     if ( t ) _test_trie();
     if ( uf ) _test_union_find();
@@ -228,6 +279,7 @@ int main(int argc, char const *argv[])
     if ( f ) _test_flow();
     if ( ss ) _test_string_search();
     if ( st ) _test_segment_tree();
-    if ( bs || t || uf || g || f || ss || st) cout << "--------------------------------------" << endl;
+    if ( ft ) _test_fenwick_tree();
+    if ( bs || t || uf || g || f || ss || st || ft) cout << "--------------------------------------" << endl;
     return 0;
 }
