@@ -1,0 +1,24 @@
+This repository contains implementations of a selection of some data structures and associated algorithms that are not included by default in the C++ STL, along with some basic unit testing. While I originally wrote them for use in competitive programming (particularly Leetcode competitions). Feel free to repurpose them to your hearts desire. This is the current list of included data structures and algorithms:
+
+- binary-search
+    - Exact match, upper bound, lower bound
+- graph-algorithms
+    - DFS, BFS
+    - Dijstkra's algorithm
+    - Bellman-Ford
+    - Floyd-Warshall
+    - Topological Sorting
+    - Kruskals's Algorithm for MST
+- trie
+    - Lowercase English Characters only, as well as any valid char
+- union-find
+    - Vectors based Union-Find by Rank implementation
+- flow
+    - Edmonds-Karp
+- string-search
+    - Rabin-Karp rolling polynomial hashing
+    - Knuth-Morris-Pratt
+- segment-tree
+    - Templated for any binary operation
+- fenwick-tree
+    - Templated for any invertible binary operation (must also provide identity element)
